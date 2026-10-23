@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import CoffeeScene from "./CoffeeScene";
+import HeroCoffee from "./HeroCoffee";
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -89,7 +89,7 @@ export default function Hero() {
           style={{ y: sceneY, scale: sceneScale }}
           className="coffee-scene-anim"
         >
-          <CoffeeScene />
+          <HeroCoffee />
         </motion.div>
       </div>
     </section>
