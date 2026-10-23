@@ -454,39 +454,26 @@ button {
   opacity: 0.4;
 }
 
-/* Coffee scene */
-.coffee-scene {
-  position: relative;
+/* Coffee scene — keeps the hero visual centred in its column */
+.coffee-scene-anim {
   width: 100%;
-  height: clamp(380px, 52vw, 560px);
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 900px;
-}
-
-.scene-glow {
-  position: absolute;
-  width: 80%;
-  height: 80%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(166, 107, 63, 0.18) 0%,
-    transparent 70%
-  );
-  filter: blur(20px);
 }
 
 .hero-photo-wrap {
   position: relative;
   width: clamp(280px, 40vw, 400px);
-  aspect-ratio: 391 / 318;
+  max-width: 100%;
+  aspect-ratio: 608 / 496;
 }
 
 .hero-photo {
   width: 100%;
   height: 100%;
+  display: block;
+  object-fit: cover;
   user-select: none;
   pointer-events: none;
   /* feather the photo's edges so it dissolves into the page instead of
@@ -1448,10 +1435,6 @@ button {
   }
   .hero-headline {
     font-size: clamp(2.4rem, 7vw, 3.6rem);
-  }
-  .coffee-scene {
-    height: clamp(320px, 50vw, 420px);
-    order: -1;
   }
   .product-grid {
     grid-template-columns: repeat(2, 1fr);

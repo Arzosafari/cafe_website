@@ -20,13 +20,13 @@ The app runs at `http://localhost:3000`. Vite dev server with live reload.
 - `src/context/CartContext.tsx` — cart state with localStorage persistence
 - `src/components/` — all UI components (Navbar, Hero, HeroCoffee, Steam, Menu, ProductCard, Story, Craft, Bestsellers, Visit, Reviews, FinalCTA, Footer, CartDrawer)
 - `src/lib/images.ts` — Unsplash CDN URL builder
-- `public/hero-coffee.png` — the hero coffee photograph (391 × 318, served from the site root)
+- `public/hero-coffee.mp4` — the hero coffee clip (608 × 496, 6 s, H.264, no sound); `public/hero-coffee.png` — its still poster frame
 
 ## Key Implementation Notes
-- The hero visual is the photograph `public/hero-coffee.png` (`HeroCoffee.tsx`) — cup, saucer and floating beans are all part of the photo.
+- The hero visual is the looping clip `/hero-coffee.mp4` (`HeroCoffee.tsx`): muted and `playsInline` so browsers autoplay it, with `/hero-coffee.png` as its poster. Cup, saucer and floating beans all come from the clip. `.hero-photo-wrap` carries the clip's 608/496 aspect ratio so the hero box never shifts, and `.coffee-scene-anim` (in `Hero.tsx`) centres the visual in its column.
 - Steam (`Steam.tsx`) is an SVG laid over the cup, positioned by `.steam-layer` in `src/index.css` as a percentage of the photo box: 50% x / bottom 58% puts its base on the coffee surface. The wisps in `Steam.tsx` are drawn in a 100 × 190 view box whose bottom edge is that surface, and rise on the `steam-rise` keyframes (negative delays keep the plume alive from the first frame). Re-check those two offsets if the photo is ever swapped.
-- The photo's edges are feathered with a CSS radial `mask-image` (solid out to 55% of a 66%/60% radius) so it dissolves into the page instead of reading as a hard rectangle; the solid core is sized to keep the cup and beans opaque.
-- `prefers-reduced-motion` disables all non-essential animation; the hero then renders the wisps without the rise animation (`still` prop on `Steam`).
+- The clip's edges are feathered with a CSS radial `mask-image` on `.hero-photo` (solid out to 55% of a 66%/60% radius) so it dissolves into the page instead of reading as a hard rectangle; the solid core is sized to keep the cup and beans opaque.
+- `prefers-reduced-motion` disables all non-essential animation; the hero then keeps the clip on its poster frame (`autoPlay={!reduced}`) and renders the wisps without the rise animation (`still` prop on `Steam`).
 - Parallax on the hero visual and text is scroll-driven (Framer Motion).
 - Product images use verified Unsplash CDN URLs (confirmed 200 OK).
 - Cart is fully functional: add, increment, decrement, remove, subtotal, demo checkout.
