@@ -5,7 +5,8 @@ A premium, animated coffee shop website built with Vite + React + TypeScript + F
 ## Tech Stack
 - **Vite 5.4** (dev server on port 3000)
 - **React 18** + **TypeScript**
-- **Framer Motion** for animations (scroll reveals, hero parallax); the hero steam runs on CSS keyframes
+- **Framer Motion** for scroll reveals and hero parallax
+- **SVG + CSS keyframes** for the hero coffee illustration, floating beans, and drifting steam
 - **CSS** — single global stylesheet (`src/index.css`) with CSS custom properties for the design system
 - No backend — cart persists via `localStorage`
 
@@ -17,16 +18,15 @@ The app runs at `http://localhost:3000`. Vite dev server with live reload.
 
 ## Project Structure
 - `src/data/` — product, business, and review data (editable by the owner)
-- `src/context/CartContext.tsx` — cart state with localStorage persistence
-- `src/components/` — all UI components (Navbar, Hero, HeroCoffee, Steam, Menu, ProductCard, Story, Craft, Bestsellers, Visit, Reviews, FinalCTA, Footer, CartDrawer)
+- `src/context/CartContext.tsx` — cart state and localStorage persistence
+- `src/components/` — all UI components (Navbar, Hero, HeroCoffee, Menu, ProductCard, Story, Craft, Bestsellers, Visit, Reviews, FinalCTA, Footer, CartDrawer)
 - `src/lib/images.ts` — Unsplash CDN URL builder
-- `public/hero-coffee.mp4` — the hero coffee clip (608 × 496, 6 s, H.264, no sound); `public/hero-coffee.png` — its still poster frame
 
 ## Key Implementation Notes
-- The hero visual is the looping clip `/hero-coffee.mp4` (`HeroCoffee.tsx`): muted and `playsInline` so browsers autoplay it, with `/hero-coffee.png` as its poster. Cup, saucer and floating beans all come from the clip. `.hero-photo-wrap` carries the clip's 608/496 aspect ratio so the hero box never shifts, and `.coffee-scene-anim` (in `Hero.tsx`) centres the visual in its column.
-- Steam (`Steam.tsx`) is an SVG laid over the cup, positioned by `.steam-layer` in `src/index.css` as a percentage of the photo box: 50% x / bottom 58% puts its base on the coffee surface. The wisps in `Steam.tsx` are drawn in a 100 × 190 view box whose bottom edge is that surface, and rise on the `steam-rise` keyframes (negative delays keep the plume alive from the first frame). Re-check those two offsets if the photo is ever swapped.
-- The hero uses a warm beige backdrop (`#dcc6b1`) sampled from the clip's outer background. The clip is slightly enlarged (450px maximum width) and feathered on all four sides by `.hero-photo-wrap::after`: two perpendicular gradients fade to the exact hero color, with a wider fade on the darker right and bottom edges. A 4px inset buffer covers residual subpixel border lines. The fade sits below the steam layer.
-- `prefers-reduced-motion` disables all non-essential animation; the hero then keeps the clip on its poster frame (`autoPlay={!reduced}`) and renders the wisps without the rise animation (`still` prop on `Steam`).
+- The hero visual is a transparent inline SVG in `HeroCoffee.tsx`: ceramic cup, heart latte art, saucer, roasted beans, and layered steam. It has no raster/video background, masks, or edge overlays. `.hero-coffee-scene` controls its responsive size, and `.coffee-scene-anim` (in `Hero.tsx`) centres it in the hero column.
+- Beans float independently with subtle rotation through `bean-float`; layered steam wisps drift through `steam-drift`. Negative animation delays keep the scene active from the first frame, and the slow `halo-breathe` animation adds ambient warmth.
+- The hero retains its warm beige backdrop (`#dcc6b1`), while the illustration uses the site's cream, caramel, and espresso palette.
+- `prefers-reduced-motion` disables the bean, steam, and halo animations while leaving a complete static scene with visible steam.
 - Parallax on the hero visual and text is scroll-driven (Framer Motion).
 - Product images use verified Unsplash CDN URLs (confirmed 200 OK).
 - Cart is fully functional: add, increment, decrement, remove, subtotal, demo checkout.
