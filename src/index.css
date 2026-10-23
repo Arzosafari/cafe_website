@@ -385,9 +385,11 @@ button {
   align-items: center;
   padding-top: 80px;
   overflow: hidden;
-  /* Match the warm beige around the coffee clip so its feathered edges
-     disappear into the hero instead of leaving a visible outline. */
-  background: #dcc6b1;
+  /* Shared by the hero and the clip's edge fade so the transition ends in
+     exactly the same color as the page. */
+  --hero-bg: #dcc6b1;
+  --hero-bg-clear: rgb(220 198 177 / 0);
+  background: var(--hero-bg);
 }
 
 .hero-inner {
@@ -462,7 +464,7 @@ button {
 
 .hero-photo-wrap {
   position: relative;
-  width: clamp(280px, 40vw, 400px);
+  width: clamp(300px, 42vw, 450px);
   max-width: 100%;
   aspect-ratio: 608 / 496;
 }
@@ -474,21 +476,35 @@ button {
   object-fit: cover;
   user-select: none;
   pointer-events: none;
-  /* Fade every edge fully into the page while keeping the cup and beans
-     crisp. Ending the fade at 90% leaves a transparent outer rim, avoiding
-     the visible rectangular edge a larger gradient can leave behind. */
-  -webkit-mask-image: radial-gradient(
-    ellipse 55% 55% at 50% 50%,
-    #000 68%,
-    rgba(0, 0, 0, 0.82) 80%,
-    transparent 90%
-  );
-  mask-image: radial-gradient(
-    ellipse 55% 55% at 50% 50%,
-    #000 68%,
-    rgba(0, 0, 0, 0.82) 80%,
-    transparent 90%
-  );
+}
+
+/* Two perpendicular fades soften all four sides without creating an oval
+   outline. The darker right and bottom edges get a wider fade to hide their
+   border and shadow. Keep this below the steam layer. */
+.hero-photo-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  /* Cover subpixel remnants along the video boundary with the exact hero
+     color. This small inner buffer prevents a thin bottom/right outline. */
+  box-shadow: inset 0 0 0 4px var(--hero-bg);
+  background:
+    linear-gradient(
+      to right,
+      var(--hero-bg) 0%,
+      var(--hero-bg-clear) 12%,
+      var(--hero-bg-clear) 84%,
+      var(--hero-bg) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      var(--hero-bg) 0%,
+      var(--hero-bg-clear) 12%,
+      var(--hero-bg-clear) 82%,
+      var(--hero-bg) 100%
+    );
 }
 
 /* Steam — anchored to the surface of the coffee in the photo (50% x, ~42% y) */
