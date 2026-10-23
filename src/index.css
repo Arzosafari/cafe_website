@@ -385,11 +385,9 @@ button {
   align-items: center;
   padding-top: 80px;
   overflow: hidden;
-  background: radial-gradient(
-    ellipse at 70% 40%,
-    var(--bg-2) 0%,
-    var(--bg) 60%
-  );
+  /* Match the warm beige around the coffee clip so its feathered edges
+     disappear into the hero instead of leaving a visible outline. */
+  background: #dcc6b1;
 }
 
 .hero-inner {
@@ -476,15 +474,21 @@ button {
   object-fit: cover;
   user-select: none;
   pointer-events: none;
-  /* feather the photo's edges so it dissolves into the page instead of
-     sitting on it as a hard-edged rectangle. The solid core is sized to keep
-     the cup and the beans fully opaque. */
+  /* Fade every edge fully into the page while keeping the cup and beans
+     crisp. Ending the fade at 90% leaves a transparent outer rim, avoiding
+     the visible rectangular edge a larger gradient can leave behind. */
   -webkit-mask-image: radial-gradient(
-    66% 60% at 50% 50%,
-    #000 55%,
-    transparent 100%
+    ellipse 55% 55% at 50% 50%,
+    #000 68%,
+    rgba(0, 0, 0, 0.82) 80%,
+    transparent 90%
   );
-  mask-image: radial-gradient(66% 60% at 50% 50%, #000 55%, transparent 100%);
+  mask-image: radial-gradient(
+    ellipse 55% 55% at 50% 50%,
+    #000 68%,
+    rgba(0, 0, 0, 0.82) 80%,
+    transparent 90%
+  );
 }
 
 /* Steam — anchored to the surface of the coffee in the photo (50% x, ~42% y) */
